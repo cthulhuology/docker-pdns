@@ -1,8 +1,8 @@
 DOCKER ?= docker
 
-all: data/dns.sqlite
+all: data/sqlite
 
-data/dns.sqlite : pdns.sql
+data/sqlite : pdns.sql
 	mkdir -p data
 	sqlite3 <pdns.sql
 
