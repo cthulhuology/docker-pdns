@@ -45,5 +45,5 @@ INSERT INTO records (id,domain_id,name,type,content,ttl) VALUES (3,1,'example.co
 INSERT INTO records (id,domain_id,name,type,content,ttl) VALUES (4,1,'www.example.com','A','127.0.0.1',3600);
 INSERT INTO records (id,domain_id,name,type,content,ttl) VALUES (5,1,'ftp.example.com','A','127.0.0.1',3600);
 
-.backup ./data/dns.sqlite
+.backup ./data/sqlite
 .exit
