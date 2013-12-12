@@ -1,12 +1,14 @@
-FROM centos
+FROM cthulhuology/postgresql
 MAINTAINER Dave Goehrig <dave@dloh.org>
 
-# Install EPEL
-RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-RUN yum install -y pdns pdns-backend-sqlite bind-utils
-RUN mkdir -p /dns
+RUN yum install -y pdns bind-utils pdns-backend-postgresql.x86_64
 
 ADD ./pdns.conf /etc/pdns/pdns.conf
+ADD ./pdns.sql /pdns.sql
+ADD ./start.sh /start.sh
+RUN chmod u+x /start.sh
 
-VOLUME /dns
-CMD /usr/sbin/pdns_server
+EXPOSE 53
+EXPOSE 53/udp
+
+CMD ./start.sh
