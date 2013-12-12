@@ -7,4 +7,6 @@ if [[ ! -x /.db.init ]]; then
 	psql -U postgres -h localhost pdns < pdns.sql
 fi
 sleep 4
+su - postgres -c '/node_modules/.bin/pgproc postgres://localhost:5432/pdns public 5380'  &
+sleep 1
 /usr/sbin/pdns_server
