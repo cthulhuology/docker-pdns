@@ -54,7 +54,6 @@ begin
 end
 $$ language plpgsql;
 
-select create_domain('example.com','master','admin');
 
 -- SOA records
 create or replace function create_soa( _domain text, _content text) returns boolean as $$
@@ -77,9 +76,6 @@ begin
 end
 $$ language plpgsql;
 
--- sample SOA
-select create_soa('example.com','ns.example.com. root.example.com. 2013111311 10800 3600 604800 3600');
-
 -- A records
 create or replace function create_a( _domain text, _host text, _ipaddr text) returns boolean as $$
 declare
@@ -100,12 +96,6 @@ begin
 	return found;
 end
 $$ language plpgsql;
-
--- sample A records
-select create_a('example.com','ftp','127.0.0.1');
-select create_a('example.com','www','127.0.0.1');
-select create_a('example.com','ns1','127.0.0.1');
-select create_a('example.com','ns2','127.0.0.1');
 
 -- NS records
 create or replace function create_ns( _domain text, _host text) returns boolean as $$
@@ -128,11 +118,7 @@ begin
 end
 $$ language plpgsql;
 
-select create_ns('example.com','ns1');
-select create_ns('example.com','ns2');
-
 -- CNAME records
-
 create or replace function create_cname( _domain text, _host text, _alias text ) returns boolean as $$
 declare
 	_domain_id integer;
@@ -199,7 +185,6 @@ begin
 	return found;
 end
 $$ language plpgsql;
-
 
 -- list domain
 create or replace function list_domain(_domain text) returns json as $$
