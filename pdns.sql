@@ -131,6 +131,76 @@ $$ language plpgsql;
 select create_ns('example.com','ns1');
 select create_ns('example.com','ns2');
 
+-- CNAME records
+
+create or replace function create_cname( _domain text, _host text, _alias text ) returns boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'CNAME', _alias, 3600);
+	return found;
+end
+$$ language plpgsql;
+
+create or replace function delete_cname( _domain text, _host text, _alias text) returns boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	delete from records where domain_id = _domain_id and name = _host and content = _alias and type = 'CNAME';	
+	return found;
+end
+$$ language plpgsql;
+
+
+-- TXT records
+-- http://www.ietf.org/rfc/rfc1464.txt
+
+create or replace function create_txt( _domain text, _host text, _txt text ) returns boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'TXT', _txt, 3600);
+	return found;
+end
+$$ language plpgsql;
+
+create or replace function delete_txt( _domain text, _host text, _txt text ) return boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	delete from records where domain_id = _domain_id and name = _host and content = _txt and type = 'TXT';
+	return found;
+end
+$$ language plpgsql;
+
+-- SRV records
+-- https://www.ietf.org/rfc/rfc2782.txt
+
+create or replace function create_srv( _domain text, _host text, _txt text ) returns boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'SRV', _txt, 3600);
+	return found;
+end
+$$ language plpgsql;
+
+create or replace function delete_srv( _domain text, _host text, _txt text ) return boolean as $$
+declare
+	_domain_id integer;
+begin
+	select into _domain_id id from domains where name = _domain;
+	delete from records where domain_id = _domain_id and name = _host and content = _txt and type = 'SRV';
+	return found;
+end
+$$ language plpgsql;
+
+
 -- list domain
 create or replace function list_domain(_domain text) returns json as $$
 declare
