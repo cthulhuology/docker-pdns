@@ -66,7 +66,7 @@ begin
 end
 $$ language plpgsql;
 
-create or replace function delete_soa( _domain ) returns boolean as $$
+create or replace function delete_soa( _domain text ) returns boolean as $$
 declare
 	_domain_id integer;
 begin
@@ -153,7 +153,7 @@ begin
 end
 $$ language plpgsql;
 
-create or replace function delete_txt( _domain text, _host text, _txt text ) return boolean as $$
+create or replace function delete_txt( _domain text, _host text, _txt text ) returns boolean as $$
 declare
 	_domain_id integer;
 begin
@@ -176,7 +176,7 @@ begin
 end
 $$ language plpgsql;
 
-create or replace function delete_srv( _domain text, _host text, _txt text ) return boolean as $$
+create or replace function delete_srv( _domain text, _host text, _txt text ) returns boolean as $$
 declare
 	_domain_id integer;
 begin
