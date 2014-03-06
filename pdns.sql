@@ -124,7 +124,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'CNAME', _alias, 3600);
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain , 'CNAME', _alias, 3600);
 	return found;
 end
 $$ language plpgsql;
@@ -134,7 +134,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	delete from records where domain_id = _domain_id and name = _host and content = _alias and type = 'CNAME';	
+	delete from records where domain_id = _domain_id and name = _host || '.' || _domain and content = _alias and type = 'CNAME';	
 	return found;
 end
 $$ language plpgsql;
@@ -148,7 +148,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'TXT', _txt, 3600);
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain, 'TXT', _txt, 3600);
 	return found;
 end
 $$ language plpgsql;
@@ -158,7 +158,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	delete from records where domain_id = _domain_id and name = _host and content = _txt and type = 'TXT';
+	delete from records where domain_id = _domain_id and name = _host || '.' || _domain and content = _txt and type = 'TXT';
 	return found;
 end
 $$ language plpgsql;
@@ -171,7 +171,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host, 'SRV', _txt, 3600);
+	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain, 'SRV', _txt, 3600);
 	return found;
 end
 $$ language plpgsql;
@@ -181,7 +181,7 @@ declare
 	_domain_id integer;
 begin
 	select into _domain_id id from domains where name = _domain;
-	delete from records where domain_id = _domain_id and name = _host and content = _txt and type = 'SRV';
+	delete from records where domain_id = _domain_id and name = _host || '.' || _domain and content = _txt and type = 'SRV';
 	return found;
 end
 $$ language plpgsql;
