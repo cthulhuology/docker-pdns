@@ -81,6 +81,7 @@ create or replace function create_a( _domain text, _host text, _ipaddr text) ret
 declare
 	_domain_id integer;
 begin
+	perform delete_a(_domain,_host,_ipaddr);
 	select into _domain_id id from domains where name = _domain;
 	insert into records(id,domain_id, name,type, content, ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' ||  _domain, 'A', _ipaddr, 3600);
 	return found;
@@ -102,6 +103,7 @@ create or replace function create_ns( _domain text, _host text) returns boolean 
 declare
 	_domain_id integer;
 begin
+	perform delete_ns(_domain,_host);
 	select into _domain_id id from domains where name = _domain;
 	insert into records(id,domain_id, name,type, content, ttl) values (nextval('record_id_seq'), _domain_id,  _domain, 'NS', _host || '.' || _domain, 3600);
 	return found;
@@ -123,6 +125,7 @@ create or replace function create_cname( _domain text, _host text, _alias text )
 declare
 	_domain_id integer;
 begin
+	perform delete_cname(_domain,_host,_alias);
 	select into _domain_id id from domains where name = _domain;
 	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain , 'CNAME', _alias, 3600);
 	return found;
@@ -147,6 +150,7 @@ create or replace function create_txt( _domain text, _host text, _txt text ) ret
 declare
 	_domain_id integer;
 begin
+	perform delete_txt(_domain,_host,_txt);
 	select into _domain_id id from domains where name = _domain;
 	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain, 'TXT', _txt, 3600);
 	return found;
@@ -170,6 +174,7 @@ create or replace function create_srv( _domain text, _host text, _txt text ) ret
 declare
 	_domain_id integer;
 begin
+	perform delete_srv(_domain,_host,_txt);
 	select into _domain_id id from domains where name = _domain;
 	insert into records(id,domain_id,name,type,content,ttl) values (nextval('record_id_seq'), _domain_id, _host || '.' || _domain, 'SRV', _txt, 3600);
 	return found;
